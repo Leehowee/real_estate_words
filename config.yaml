@@ -3,3 +3,5 @@ train_path: '/U_2021PZZZJC0001/real_estate_sentiment_analysis/dataset_huike_chec
 output_path: './output/'
 basic_path: './basic_words.txt'
 stop_word_path: './stop_words.txt'
+origin_reult_path: './origin_result.txt'
+final_reult_path: './final_result.txt'

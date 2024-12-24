@@ -1,0 +1,5 @@
+# random seed for batch sampling
+train_path: '/U_2021PZZZJC0001/real_estate_sentiment_analysis/dataset_huike_check/'
+output_path: './output/'
+basic_path: './basic_words.txt'
+stop_word_path: './stop_words.txt'

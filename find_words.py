@@ -176,8 +176,38 @@ def train(config):
     sopmier = SoPmi(config)
     sopmier.sopmi()
 
+def is_chinese(s):
+    return all('\u4e00' <= char <= '\u9fff' for char in s)
+
+def select_words(config):
+    words={}
+    pmi_dict = {}
+    for dir in os.listdir(config['output_path']):
+        path = os.path.join(config['output_path'], dir)
+        basic_words = [line.strip().split(',')[0] for line in open(path)]
+        pmis = [float(line.strip().split(',')[1]) for line in open(path)]
+        # print("begin %s" % path)
+        for word, pmi in zip(basic_words, pmis):
+                if word in words:
+                    words[word] += 1
+                    pmi_dict[word] += pmi
+                else:
+                    words[word] = 1
+                    pmi_dict[word] = pmi
+        f1 = open(config['origin_result_path'], 'w+')
+        f2 = open(config['final_result_path'], 'w+')
+        for word, pmi in sorted(pmi_dict.items(), key=lambda asd:asd[1], reverse=True):
+            if is_chinese(word):
+                #  cnt += 1
+                f1.write(word + ',' + str(pmi) + ',' + str(words[word]) + '\n')
+                if len(word)>=3:
+                     f2.write(word + ',' + str(pmi) + ',' + str(words[word]) + '\n')
+        f1.close()
+        f2.close()
+
 if __name__ == "__main__":
     with open("./config.yaml") as f:
         cfg = yaml.load(f, Loader=yaml.FullLoader)
     print(cfg)
     train(cfg)
+    select_words(cfg)
